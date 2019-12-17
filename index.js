@@ -40,13 +40,17 @@ function start() {
         viewEmployees();
       }
       // //view all departments
-      // else if(answer.cms === "View Department") {
-      //   viewDepartments();
-      // } 
-      // //view all roles
-      // else if(answer.cms === "View Roles"){
-      //   viewRoles();
-      // }
+      else if(answer.cms === "View Department") {
+        viewDepartment();
+      } 
+      //view all roles
+      else if(answer.cms === "View Roles"){
+        viewRoles();
+      }
+      //add new employee
+      else if(answer.cms === "Add Employee"){
+        addEmployee();
+      }
       //Finish CMS Database
       else {
         connection.end();
@@ -64,52 +68,66 @@ function viewEmployees() {
   });
 }
 
-// // function to post new employee to table
-// function postAuction() {
-//   // prompt for info about the employee
-//   inquirer
-//     .prompt([
-//       {
-//         name: "item",
-//         type: "input",
-//         message: "What is the item you would like to submit?"
-//       },
-//       {
-//         name: "category",
-//         type: "input",
-//         message: "What category would you like to place your auction in?"
-//       },
-//       {
-//         name: "startingBid",
-//         type: "input",
-//         message: "What would you like your starting bid to be?",
-//         validate: function(value) {
-//           if (isNaN(value) === false) {
-//             return true;
-//           }
-//           return false;
-//         }
-//       }
-//     ])
-//     .then(function(answer) {
-//       // when finished prompting, insert a new item into the db with that info
-//       connection.query(
-//         "INSERT INTO auctions SET ?",
-//         {
-//           item_name: answer.item,
-//           category: answer.category,
-//           starting_bid: answer.startingBid || 0,
-//           highest_bid: answer.startingBid || 0
-//         },
-//         function(err) {
-//           if (err) throw err;
-//           console.log("Your auction was created successfully!");
-//           // re-prompt the user for if they want to bid or post
-//           start();
-//         }
-//       );
-//     });
-// }
+//Function to View All Roles
+function viewRoles() {
+  // query employees table 
+  connection.query("SELECT * FROM roles", function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
+
+//Function to View All Departments
+function viewDepartment() {
+  // query employees table 
+  connection.query("SELECT * FROM department", function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
+}
+
+
+// function to add new employee to table
+function addEmployee() {
+  // prompt for info about the employee
+  inquirer
+    .prompt([
+      {
+        name: "empFName",
+        type: "input",
+        message: "What is the first name of your employee?"
+      },
+      {
+        name: "empLName",
+        type: "input",
+        message: "What is the last name of your employee?"
+      },
+      {
+        name: "empID",
+        type: "input",
+        message: "What is your employee's role id?",
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO employees SET ?",
+        {
+          first_name: answer.empFName,
+          last_name: answer.empLName,
+          role_id: answer.empID || 3,
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your new employee was added!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
+}
 
 
 
