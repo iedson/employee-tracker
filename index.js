@@ -51,6 +51,14 @@ function start() {
       else if(answer.cms === "Add Employee"){
         addEmployee();
       }
+      //add new department
+      else if(answer.cms === "Add Department"){
+        addDepartment();
+      }
+      //add new role
+      else if(answer.cms === "Add role"){
+        addRole();
+      }
       //Finish CMS Database
       else {
         connection.end();
@@ -107,7 +115,7 @@ function addEmployee() {
       {
         name: "empID",
         type: "input",
-        message: "What is your employee's role id?",
+        message: "What is your employee's role id?"
       }
     ])
     .then(function(answer) {
@@ -129,6 +137,68 @@ function addEmployee() {
     });
 }
 
+//add department
+function addDepartment() {
+  // prompt for info about the employee
+  inquirer
+    .prompt({
+        name: "newDept",
+        type: "input",
+        message: "What is the name of your new department?"
+      })
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          department_name: answer.newDept,
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your new department was created!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
+}
+
+//add role
+function addEmployee() {
+  // prompt for info about the employee
+  inquirer
+    .prompt([
+      {
+        name: "roleTitle",
+        type: "input",
+        message: "What is the title of your new role?"
+      },
+      {
+        name: "roleSalary",
+        type:"input",
+        message: "What is the salary of the new role?"
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO roles SET ?",
+        {
+          title: answer.roleTitle,
+          salary: answer.roleSalary,
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("Your new role was added!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
+}
+
+//Update Employee 
+  //function to join together all tables - SQL join? 
 
 
 
