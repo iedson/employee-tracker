@@ -3,23 +3,25 @@ CREATE DATABASE employee_DB;
 
 USE employee_DB;
 
-CREATE TABLE departments(
-  id INT NOT NULL,
-  dept_name VARCHAR(30) NOT NULL,
+CREATE TABLE department (
+  id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(30) NULL,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE roles(
-    id INT NOT NULL, 
+    id INT NOT NULL AUTO_INCREMENT, 
     title VARCHAR(30) NOT NULL,
-    salary DECIMAL (6,2) NOT NULL
+    salary DECIMAL (8,2) NOT NULL,
+    PRIMARY KEY (id)
 );
 
+
 CREATE TABLE employees(
-    id INT NOT NULL, 
+    id INT NOT NULL AUTO_INCREMENT, 
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
-    manager_id INT DEFAULT NULL
+    PRIMARY KEY (id)
 );
 
